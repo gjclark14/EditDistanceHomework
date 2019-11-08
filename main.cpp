@@ -15,32 +15,36 @@ int min(const int & a, const int & b, const int & c) {
 // and index of min value
 std::tuple<int, int> getMinIndices(const std::vector<std::vector<int>> &matrix, const int & minimum, const int &i,
                                    const int &j) {
-    if (minimum == matrix[i + 1][j + 1]) {
-        return std::tuple<int, int>(i + 1, j + 1);
+    if (minimum == matrix[i - 1][j - 1]) {
+        return {i - 1, j - 1};
     } else if (minimum == matrix[i+1][j]) {
-        return std::tuple<int, int>(i+1, j);
+        return {i - 1, j};
     } else {
-        return std::tuple<int, int>(i, j + 1);
+        return {i, j - 1};
     }
 }
 
 
 // find the minimum in the surrounding three vertices. move to that
 void printAlignment(const std::vector<std::vector<int>> & matrix) {
-    int i = 0, j = 0;
 
     const int COLS = matrix.size();
     const int ROWS = matrix.at(0).size();
 
     int minimum = 0;
-    while(i < COLS and j < ROWS) {
-        minimum = min(matrix[i + 1][j],     // deletion
-                      matrix[i][j + 1],     // insertion
-                      matrix[i + 1][j + 1]);  // substitution
+
+    int i = COLS - 1, j = ROWS - 1;
+
+    // This is skipping the bottom-right-most element because we are searching for the previous ones
+    printf("Coordinates: (%d,%d)\n",j,i);
+    while(i > 0 and j > 0) {
+        minimum = min(matrix[i - 1][j],     // deletion
+                      matrix[i][j - 1],     // insertion
+                      matrix[i - 1][j - 1]);  // substitution
 
         std::tuple<int,int> indices = getMinIndices(matrix, minimum, i, j);
         i = std::get<0>(indices), j = std::get<1>(indices);
-        printf("Coordinates: (%d,%d)\n",i,j);
+        printf("Coordinates: (%d,%d)\n",j,i);
     }
 
 }
