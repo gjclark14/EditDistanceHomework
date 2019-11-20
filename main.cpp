@@ -5,6 +5,7 @@
 #include <iomanip>
 
 //#define DEBUG
+#define CONSOLE_INPUT
 
 
 class Calculator {
@@ -218,6 +219,7 @@ public:
 
 
 int main() {
+#ifndef CONSOLE_INPUT
     std::string str1 = "Revolution";
 
     std::string str2 = "Evaluation";
@@ -229,6 +231,25 @@ int main() {
 
     Calculator c(str1,str2);
 
+#else
+
+    std::string str1;
+    std::string str2;
+
+    std::cout << "Enter string 1: ";
+    std::cin >> str1;
+
+    std::cout << "\nEnter string 2: ";
+    std::cin >> str2;
+    std::cout << '\n';
+
+    if(str1.length() > 30 or str2.length() > 30) {
+        std::printf("String length over 30 error.\n");
+        return -1;
+    }
+
+    Calculator c1(str1, str2);
+#endif
 
 
     return 0;
